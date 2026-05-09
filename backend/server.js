@@ -5,6 +5,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post("/produtos", (req, res) => {
+app.post("/produtos", (req, res) => {//recebe os dados do script.js
 
 });
