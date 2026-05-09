@@ -1,14 +1,26 @@
 {
   "name": "stocknexus",
   "version": "1.0.0",
-  "description": "Sistema de cadastro de produtos em depósito",
-  "main": "server.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Matheus-Victor-SS/StockNexus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Matheus-Victor-SS/StockNexus/issues"
+  },
+  "homepage": "https://github.com/Matheus-Victor-SS/StockNexus#readme",
   "dependencies": {
-    "express": "^4.18.2",
-    "sqlite3": "^5.1.6",
-    "cors": "^2.8.5"
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "sqlite3": "^6.0.1"
   }
 }
