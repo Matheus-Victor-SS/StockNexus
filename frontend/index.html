@@ -29,17 +29,17 @@
         <label for="preco">Preço (R$):</label>
         <input type="number" id="preco" name="preco" step="0.01" min="0" required>
 
-        <button type="submit" id="btn-cadastrar" onclick="cadastrar()">Cadastrar Produto</button>
+        <button type="submit" id="btn-cadastrar" onclick="cadastrar(event)">Cadastrar Produto</button>
         <button type="reset" id="btn-limpar">Limpar Formulário</button>
       </form>
     </section>
 
-    <section id="lista">
-      <h2>Produtos Cadastrados</h2>
-      <button id="btn-atualizar">Atualizar Lista</button>
-      <ul id="lista-produtos">
-      </ul>
-    </section>
+   <section id="lista">
+  <h2>Produtos Cadastrados</h2>
+
+  <ul id="lista-produtos"></ul>
+
+</section>
   </main>
   <script src="script.js"></script>
 </body>
