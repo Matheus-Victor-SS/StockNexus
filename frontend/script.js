@@ -1,10 +1,7 @@
-// CADASTRAR PRODUTO
 async function cadastrar(event) {
-
-    // impede o formulário de recarregar a página
+ // impede o formulário de recarregar a página
     event.preventDefault();
 
-    // pega os valores dos inputs
     const nome = document.getElementById("nome").value;
     const codigo = document.getElementById("codigo_barras").value;
     const descricao = document.getElementById("descricao").value;
@@ -18,6 +15,7 @@ async function cadastrar(event) {
         headers: {
             "Content-Type": "application/json"
         },
+
         //Transforma os dados em JSON para enviar ao backend
         body: JSON.stringify({
             codigo_barras: codigo,
@@ -30,10 +28,12 @@ async function cadastrar(event) {
 
     // atualiza a lista automaticamente
     carregarProdutos();
-    // limpa formulário
+    // limpa os campos do formulário
     document.getElementById("form-produto").reset();
     alert("Produto cadastrado!");
 }
+
+
 // CARREGAR PRODUTOS AUTOMATICAMENTE
 window.onload = carregarProdutos;
 
@@ -66,10 +66,21 @@ async function carregarProdutos() {
                 Quantidade: ${produto.quantidade}<br>
 
                 Preço: R$ ${produto.preco}
-
+                <button onclick="deletarProduto(${produto.id})">
+                    Deletar
+                </button>
                 <hr>
 
             </li>
         `;
     });
+}
+async function deletarProduto(id) {
+
+    await fetch(`http://localhost:3000/produtos/${id}`, {
+
+        method: "DELETE"
+    });
+
+    carregarProdutos();
 }

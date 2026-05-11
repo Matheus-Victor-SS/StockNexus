@@ -1,5 +1,5 @@
 //importando as dependências necessárias
-const express = require("express");
+const express = require("express");//framework para criar o servidor
 const cors = require("cors");
 const db = require("./database");//importa o banco do database.js
 //biblioteca que cria o servidor
@@ -56,6 +56,20 @@ app.post("/produtos", (req, res) => {
     );
 });
 
+//DELETAR
+app.delete("/produtos/:id", (req, res) => {
+    const id = req.params.id;//pega o id do produto a ser deletado
+    db.run("DELETE FROM produtos WHERE id = ?", [id], function(err) {
+        if (err) {
+            return res.status(500).json({   
+                erro: err.message
+            });
+        }
+        res.json({
+            mensagem: "Produto deletado!"
+        });
+    });
+});
 //liga p servidor na porta 3000
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000");
