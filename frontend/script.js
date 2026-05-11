@@ -73,16 +73,48 @@ async function carregarProdutos() {
     // transforma JSON em array JS
     produtosGlobais = await resposta.json();
 
+    // DASHBOARD
+
+document.getElementById("total-produtos")
+.innerText = produtosGlobais.length;
+
+
+// VALOR TOTAL ESTOQUE
+
+let valorTotal = 0;
+
+produtosGlobais.forEach(produto => {
+
+    valorTotal += produto.preco * produto.quantidade;
+});
+
+document.getElementById("valor-estoque")
+.innerText = `R$ ${valorTotal.toFixed(2)}`;
+
+
+// ESTOQUE BAIXO
+
+const baixoEstoque = produtosGlobais.filter(produto =>
+    produto.quantidade < 5
+);
+
+document.getElementById("estoque-baixo")
+.innerText = baixoEstoque.length;
+
     const lista = document.getElementById("lista-produtos");
     lista.innerHTML = "";
 
     // percorre todos produtos
     produtosGlobais.forEach(produto => {
-
+        const classeEstoque =
+    produto.quantidade < 5
+    ? "estoque-baixo"
+    : "";
+    
         // adiciona HTML na lista
         lista.innerHTML += `
         
-            <li data-id="${produto.id}">
+            <li data-id="${produto.id}" class="${classeEstoque}">
 
                 <strong>${produto.nome}</strong><br>
 
