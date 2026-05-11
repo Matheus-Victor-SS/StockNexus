@@ -1,23 +1,32 @@
 let produtosGlobais = [];//variável global para armazenar os produtos
+
 async function cadastrar(event) {
- // impede o formulário de recarregar a página
-    event.preventDefault();
+    if (event) {
+        event.preventDefault();
+    }
 
-    const nome = document.getElementById("nome").value;
-    const codigo = document.getElementById("codigo_barras").value;
-    const descricao = document.getElementById("descricao").value;
-    const quantidade = document.getElementById("quantidade").value;
-    const preco = document.getElementById("preco").value;
+    const nome = document.getElementById("nome").value.trim();
+    const codigo = document.getElementById("codigo_barras").value.trim();
+    const descricao = document.getElementById("descricao").value.trim();
+    const quantidade = Number(document.getElementById("quantidade").value);
+    const preco = Number(document.getElementById("preco").value);
 
-    // envia para o backend
-    await fetch("http://localhost:3000/produtos", {
+    if (!codigo || !nome || !quantidade || isNaN(preco)) {
+        alert("Preencha o código, nome, quantidade e preço corretamente.");
+        return;
+    }
 
+    const codigoDuplicado = produtosGlobais.some(produto => produto.codigo_barras.toLowerCase() === codigo.toLowerCase());
+    if (codigoDuplicado) {
+        alert("Já existe produto com este código de barras.");
+        return;
+    }
+
+    const resposta = await fetch("http://localhost:3000/produtos", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-
-        //Transforma os dados em JSON para enviar ao backend
         body: JSON.stringify({
             codigo_barras: codigo,
             nome: nome,
@@ -27,16 +36,22 @@ async function cadastrar(event) {
         })
     });
 
-    // atualiza a lista automaticamente
-    carregarProdutos();
-    // limpa os campos do formulário
+    if (!resposta.ok) {
+        const erro = await resposta.json().catch(() => ({}));
+        alert("Erro ao cadastrar produto: " + (erro.erro || erro.mensagem || resposta.statusText));
+        return;
+    }
+
     document.getElementById("form-produto").reset();
     alert("Produto cadastrado!");
+    carregarProdutos();
 }
 
-
 // CARREGAR PRODUTOS AUTOMATICAMENTE
-window.onload = carregarProdutos;
+window.onload = () => {
+    document.getElementById("form-produto").addEventListener("submit", cadastrar);
+    carregarProdutos();
+};
 
 // MOSTRAR PRODUTOS
 async function carregarProdutos() {
@@ -133,43 +148,30 @@ async function editarProduto(id) {
 }
 //PESQUISAR
 function pesquisarProdutos() {
-
     const texto = document.getElementById("pesquisa").value.toLowerCase();//pega valor escrito
-
     const lista = document.getElementById("lista-produtos");
-
     lista.innerHTML = "";
-    //filtra 
-    const filtrados = produtosGlobais.filter(produto =>
-        //verifica se o nome do produto inclui o texto pesquisado
-        produto.nome.toLowerCase().includes(texto)
-    );
-    //busca cada um filtrado e mostra
-    filtrados.forEach(produto => {
 
+    const filtrados = produtosGlobais.filter(produto => {
+        return produto.nome.toLowerCase().includes(texto) ||
+            produto.codigo_barras.toLowerCase().includes(texto);
+    });
+
+    filtrados.forEach(produto => {
         lista.innerHTML += `
             <li>
-
                 <strong>${produto.nome}</strong><br>
-
                 Código: ${produto.codigo_barras}<br>
-
                 Descrição: ${produto.descricao}<br>
-
                 Quantidade: ${produto.quantidade}<br>
-
                 Preço: R$ ${produto.preco}<br>
-
                 <button onclick="editarProduto(${produto.id})">
                     Editar
                 </button>
-
                 <button onclick="deletarProduto(${produto.id})">
                     Deletar
                 </button>
-
                 <hr>
-
             </li>
         `;
     });

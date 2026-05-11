@@ -33,5 +33,5 @@ db.serialize(() => {//serialize executa em ordem
 // Exporta a instância do banco para uso em outros arquivos
 module.exports = db;
 
-
+//acessar pasta backend no terminal e rodar npx nodemon server.js
 //http://localhost:3000/produtos - para acessar os produtos

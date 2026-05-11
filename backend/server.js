@@ -43,6 +43,12 @@ app.post("/produtos", (req, res) => {
         function(err) {
 
             if (err) {//se der erro mostra mensagem
+                if (err.code === "SQLITE_CONSTRAINT" && err.message.includes("produtos.codigo_barras")) {
+                    return res.status(400).json({
+                        erro: "Código de barras já cadastrado."
+                    });
+                }
+
                 return res.status(500).json({
                     erro: err.message
                 });
@@ -107,6 +113,12 @@ app.put("/produtos/:id", (req, res) => {
         function(err) {
 
             if (err) {
+                if (err.code === "SQLITE_CONSTRAINT" && err.message.includes("produtos.codigo_barras")) {
+                    return res.status(400).json({
+                        erro: "Código de barras já cadastrado."
+                    });
+                }
+
                 return res.status(500).json({
                     erro: err.message
                 });
