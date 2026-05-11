@@ -69,9 +69,44 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 >
 
   <ul id="lista-produtos"></ul>
-
 </section>
   </main>
+  <!-- MODAL DELETE -->
+
+<div id="modal-delete" class="modal">
+
+  <div class="modal-content">
+
+    <h3>Remover Produto</h3>
+
+    <p>
+      Tem certeza que deseja deletar este produto?
+    </p>
+
+    <div class="modal-buttons">
+
+      <button
+      class="btn-cancelar"
+      onclick="fecharModal()">
+
+        Cancelar
+
+      </button>
+
+      <button
+      class="btn-confirmar"
+      id="btn-confirmar-delete">
+
+        Deletar
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
   <script src="script.js"></script>
 </body>
 </html>

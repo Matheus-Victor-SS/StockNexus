@@ -1,4 +1,5 @@
 let produtosGlobais = [];//variável global para armazenar os produtos
+let produtoParaDeletar = null;
 
 function mostrarMensagem(mensagem, tipo = 'info') {
     const divMensagem = document.getElementById("mensagem");
@@ -119,23 +120,46 @@ async function carregarProdutos() {
     });
 }
 //DELETAR
-async function deletarProduto(id) {
+// ABRIR MODAL DELETE
+function deletarProduto(id) {
 
-    const confirmar = confirm(//abre o popup
-        "Tem certeza que deseja deletar este produto permanentemente? Esta ação não pode ser desfeita."
-    );
+    produtoParaDeletar = id;
 
-    if (!confirmar) {
-        return;
-    }
-
-    await fetch(`http://localhost:3000/produtos/${id}`, {
-
-        method: "DELETE"
-    });
-
-    carregarProdutos();
+    document
+        .getElementById("modal-delete")
+        .classList
+        .add("ativo");
 }
+
+
+// FECHAR MODAL
+function fecharModal() {
+
+    document
+        .getElementById("modal-delete")
+        .classList
+        .remove("ativo");
+}
+
+
+// CONFIRMAR DELETE
+document
+    .getElementById("btn-confirmar-delete")
+    .addEventListener("click", async () => {
+
+        if (!produtoParaDeletar) return;
+
+        await fetch(
+            `http://localhost:3000/produtos/${produtoParaDeletar}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        fecharModal();
+
+        carregarProdutos();
+    });
 //EDITAR
 async function editarProduto(id) {
     const li = document.querySelector(`li[data-id="${id}"]`);
