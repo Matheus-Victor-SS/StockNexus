@@ -1,8 +1,18 @@
-# StockNexus 
+# StockNexus
 
 Sistema de gerenciamento de estoque desenvolvido com JavaScript, Node.js, Express e SQLite.
 
-O projeto permite cadastrar, visualizar, pesquisar, editar e remover produtos através de uma interface moderna e dinâmica.
+O projeto permite cadastrar, visualizar, pesquisar, editar e remover produtos através de uma interface moderna e dinâmica, simulando o funcionamento de sistemas reais de controle de estoque.
+
+---
+
+# Preview
+
+Adicione aqui uma imagem ou GIF do sistema:
+
+```md
+![Preview do Sistema](./preview.png)
+```
 
 ---
 
@@ -14,7 +24,7 @@ O projeto permite cadastrar, visualizar, pesquisar, editar e remover produtos at
 * Edição de produtos
 * Exclusão com confirmação
 * Dashboard com métricas
-* Alerta de estoque baixo
+* Alerta visual de estoque baixo
 * API REST com Express
 * Banco de dados SQLite
 
@@ -43,19 +53,21 @@ O projeto permite cadastrar, visualizar, pesquisar, editar e remover produtos at
 
 ## Instalar dependências
 
-```bash id="f3a5w1"
+```bash
 npm install
 ```
 
 ## Iniciar servidor
 
-```bash id="m9k2x4"
+### Com Nodemon
+
+```bash
 npx nodemon server.js
 ```
 
-ou
+### Ou com Node
 
-```bash id="d7q8v2"
+```bash
 node server.js
 ```
 
@@ -63,7 +75,7 @@ node server.js
 
 # API
 
-```http id="h2m6x8"
+```http
 GET    /produtos
 POST   /produtos
 PUT    /produtos/:id
@@ -72,6 +84,25 @@ DELETE /produtos/:id
 
 ---
 
+# Estrutura do Projeto
+
+```txt
+StockNexus/
+│
+├── frontend/
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+│
+├── backend/
+│   ├── server.js
+│   ├── database.js
+│   ├── database.db
+│   └── package.json
+```
+
+---
+
 # Autor
 
-Matheus Victor 🚀
+Desenvolvido por Matheus Victor 🚀
