@@ -12,13 +12,15 @@ async function cadastrar(event) {
     const preco = Number(document.getElementById("preco").value);
 
     if (!codigo || !nome || !quantidade || isNaN(preco)) {
-        alert("Preencha o código, nome, quantidade e preço corretamente.");
+        document.getElementById("mensagem-erro").textContent = "Preencha o código, nome, quantidade e preço corretamente.";
+        document.getElementById("mensagem-erro").style.color = "red";
         return;
     }
 
     const codigoDuplicado = produtosGlobais.some(produto => produto.codigo_barras.toLowerCase() === codigo.toLowerCase());
     if (codigoDuplicado) {
-        alert("Já existe produto com este código de barras.");
+        document.getElementById("mensagem-erro").textContent = "Código de barras já cadastrado.";
+        document.getElementById("mensagem-erro").style.color = "red";
         return;
     }
 
@@ -38,12 +40,14 @@ async function cadastrar(event) {
 
     if (!resposta.ok) {
         const erro = await resposta.json().catch(() => ({}));
-        alert("Erro ao cadastrar produto: " + (erro.erro || erro.mensagem || resposta.statusText));
+        document.getElementById("mensagem-erro").textContent = "Erro ao cadastrar produto: " + (erro.erro || erro.mensagem || resposta.statusText);
+        document.getElementById("mensagem-erro").style.color = "red";
         return;
     }
 
     document.getElementById("form-produto").reset();
-    alert("Produto cadastrado!");
+    document.getElementById("mensagem-erro").textContent = "Produto cadastrado!";
+    document.getElementById("mensagem-erro").style.color = "green";
     carregarProdutos();
 }
 
