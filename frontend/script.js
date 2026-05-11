@@ -66,6 +66,10 @@ async function carregarProdutos() {
                 Quantidade: ${produto.quantidade}<br>
 
                 Preço: R$ ${produto.preco}
+
+                <button onclick="editarProduto(${produto.id})">
+                    Editar
+                </button>
                 <button onclick="deletarProduto(${produto.id})">
                     Deletar
                 </button>
@@ -75,11 +79,53 @@ async function carregarProdutos() {
         `;
     });
 }
+
 async function deletarProduto(id) {
+
+    const confirmar = confirm(//abre o popup
+        "Tem certeza que deseja deletar este produto?"
+    );
+
+    if (!confirmar) {
+        return;
+    }
 
     await fetch(`http://localhost:3000/produtos/${id}`, {
 
         method: "DELETE"
+    });
+
+    carregarProdutos();
+}
+
+async function editarProduto(id) {
+
+    const codigo = prompt("Novo código de barras:");
+    const nome = prompt("Novo nome:");
+    const descricao = prompt("Nova descrição:");
+    const quantidade = prompt("Nova quantidade:");
+    const preco = prompt("Novo preço:");
+
+    await fetch(`http://localhost:3000/produtos/${id}`, {
+
+        method: "PUT",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            codigo_barras: codigo,
+
+            nome: nome,
+
+            descricao: descricao,
+
+            quantidade: quantidade,
+
+            preco: preco
+        })
     });
 
     carregarProdutos();

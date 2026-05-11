@@ -70,6 +70,55 @@ app.delete("/produtos/:id", (req, res) => {
         });
     });
 });
+
+// EDITAR PRODUTO
+app.put("/produtos/:id", (req, res) => {
+
+    const id = req.params.id;
+
+    const {
+        codigo_barras,
+        nome,
+        descricao,
+        quantidade,
+        preco
+    } = req.body;
+
+    db.run(
+        `
+        UPDATE produtos
+        SET
+            codigo_barras = ?,
+            nome = ?,
+            descricao = ?,
+            quantidade = ?,
+            preco = ?
+        WHERE id = ?
+        `,
+        [
+            codigo_barras,
+            nome,
+            descricao,
+            quantidade,
+            preco,
+            id
+        ],
+
+        function(err) {
+
+            if (err) {
+                return res.status(500).json({
+                    erro: err.message
+                });
+            }
+
+            res.json({
+                mensagem: "Produto atualizado!"
+            });
+        }
+    );
+});
+
 //liga p servidor na porta 3000
 app.listen(3000, () => {
     console.log("Servidor rodando na porta 3000");
