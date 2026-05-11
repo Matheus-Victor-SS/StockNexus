@@ -1,3 +1,4 @@
+let produtosGlobais = [];//variável global para armazenar os produtos
 async function cadastrar(event) {
  // impede o formulário de recarregar a página
     event.preventDefault();
@@ -44,13 +45,13 @@ async function carregarProdutos() {
     const resposta = await fetch("http://localhost:3000/produtos");
 
     // transforma JSON em array JS
-    const produtos = await resposta.json();
+    produtosGlobais = await resposta.json();
 
     const lista = document.getElementById("lista-produtos");
     lista.innerHTML = "";
 
     // percorre todos produtos
-    produtos.forEach(produto => {
+    produtosGlobais.forEach(produto => {
 
         // adiciona HTML na lista
         lista.innerHTML += `
@@ -79,7 +80,7 @@ async function carregarProdutos() {
         `;
     });
 }
-
+//DELETAR
 async function deletarProduto(id) {
 
     const confirmar = confirm(//abre o popup
@@ -97,7 +98,7 @@ async function deletarProduto(id) {
 
     carregarProdutos();
 }
-
+//EDITAR
 async function editarProduto(id) {
 
     const codigo = prompt("Novo código de barras:");
@@ -129,4 +130,47 @@ async function editarProduto(id) {
     });
 
     carregarProdutos();
+}
+//PESQUISAR
+function pesquisarProdutos() {
+
+    const texto = document.getElementById("pesquisa").value.toLowerCase();//pega valor escrito
+
+    const lista = document.getElementById("lista-produtos");
+
+    lista.innerHTML = "";
+    //filtra 
+    const filtrados = produtosGlobais.filter(produto =>
+        //verifica se o nome do produto inclui o texto pesquisado
+        produto.nome.toLowerCase().includes(texto)
+    );
+    //busca cada um filtrado e mostra
+    filtrados.forEach(produto => {
+
+        lista.innerHTML += `
+            <li>
+
+                <strong>${produto.nome}</strong><br>
+
+                Código: ${produto.codigo_barras}<br>
+
+                Descrição: ${produto.descricao}<br>
+
+                Quantidade: ${produto.quantidade}<br>
+
+                Preço: R$ ${produto.preco}<br>
+
+                <button onclick="editarProduto(${produto.id})">
+                    Editar
+                </button>
+
+                <button onclick="deletarProduto(${produto.id})">
+                    Deletar
+                </button>
+
+                <hr>
+
+            </li>
+        `;
+    });
 }
