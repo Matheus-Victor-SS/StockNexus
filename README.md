@@ -7,12 +7,8 @@ O projeto permite cadastrar, visualizar, pesquisar, editar e remover produtos at
 ---
 
 # Preview
-
-Adicione aqui uma imagem ou GIF do sistema:
-
-```md
 ![Preview do Sistema](./preview.png)
-```
+
 
 ---
 
