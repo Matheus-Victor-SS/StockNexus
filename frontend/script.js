@@ -83,12 +83,25 @@ async function carregarProdutos() {
 
                 Preço: R$ ${produto.preco}
 
-                <button onclick="editarProduto(${produto.id})">
-                    Editar
-                </button>
-                <button onclick="deletarProduto(${produto.id})">
-                    Deletar
-                </button>
+                <div class="acoes">
+
+    <button
+    class="btn-editar"
+    onclick="editarProduto(${produto.id})">
+
+        <i class="fa-solid fa-pen"></i>
+
+    </button>
+
+    <button
+    class="btn-deletar"
+    onclick="deletarProduto(${produto.id})">
+
+        <i class="fa-solid fa-trash"></i>
+
+    </button>
+
+</div>
                 <hr>
 
             </li>

@@ -404,3 +404,84 @@ button:hover {
         display: none;
     }
 }
+/* AÇÕES */
+
+.acoes {
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+
+/* BOTÕES ÍCONE */
+
+.btn-editar,
+.btn-deletar {
+
+    width: 42px;
+
+    height: 42px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    font-size: 15px;
+}
+
+
+/* EDITAR */
+
+.btn-editar {
+
+    background:
+        rgba(0,217,255,0.12);
+
+    color: #00d9ff;
+
+    border:
+        1px solid rgba(0,217,255,0.2);
+}
+
+.btn-editar:hover {
+
+    background:
+        rgba(0,217,255,0.22);
+
+    transform: translateY(-2px);
+}
+
+
+/* DELETAR */
+
+.btn-deletar {
+
+    background:
+        rgba(255,70,70,0.12);
+
+    color: #ff5b5b;
+
+    border:
+        1px solid rgba(255,70,70,0.2);
+}
+
+.btn-deletar:hover {
+
+    background:
+        rgba(255,70,70,0.22);
+
+    transform: translateY(-2px);
+}
