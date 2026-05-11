@@ -352,15 +352,99 @@ button:hover {
 }
 
 
-/* BOTÕES DOS PRODUTOS */
+/* MENSAGEM */
 
-#lista-produtos button {
+.mensagem {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+}
 
-    margin-top: 14px;
+.mensagem.erro {
+    background-color: #ff4d4d;
+    color: white;
+}
 
-    margin-right: 10px;
+.mensagem.sucesso {
+    background-color: #4CAF50;
+    color: white;
+}
 
-    padding: 10px 16px;
+.mensagem.info {
+    background-color: #2196F3;
+    color: white;
+}
+
+/* AÇÕES */
+
+.acoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-editar, .btn-deletar, .btn-salvar, .btn-cancelar {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-editar {
+    background-color: #2196F3;
+    color: white;
+}
+
+.btn-editar:hover {
+    background-color: #1976D2;
+}
+
+.btn-deletar {
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-deletar:hover {
+    background-color: #d32f2f;
+}
+
+.btn-salvar {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-salvar:hover {
+    background-color: #388E3C;
+}
+
+.btn-cancelar {
+    background-color: #9E9E9E;
+    color: white;
+}
+
+.btn-cancelar:hover {
+    background-color: #757575;
+}
+
+/* CAMPOS DE EDIÇÃO */
+
+#lista-produtos input, #lista-produtos textarea {
+    width: 100%;
+    margin-bottom: 5px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: rgba(255,255,255,0.9);
+    color: #333;
+}
+
+#lista-produtos textarea {
+    resize: vertical;
+    min-height: 60px;
 }
 
 

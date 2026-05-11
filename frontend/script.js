@@ -1,5 +1,15 @@
 let produtosGlobais = [];//variável global para armazenar os produtos
 
+function mostrarMensagem(mensagem, tipo = 'info') {
+    const divMensagem = document.getElementById("mensagem");
+    divMensagem.textContent = mensagem;
+    divMensagem.className = `mensagem ${tipo}`;
+    setTimeout(() => {
+        divMensagem.textContent = '';
+        divMensagem.className = 'mensagem';
+    }, 5000); // Limpa após 5 segundos
+}
+
 async function cadastrar(event) {
     if (event) {
         event.preventDefault();
@@ -12,15 +22,13 @@ async function cadastrar(event) {
     const preco = Number(document.getElementById("preco").value);
 
     if (!codigo || !nome || !quantidade || isNaN(preco)) {
-        document.getElementById("mensagem-erro").textContent = "Preencha o código, nome, quantidade e preço corretamente.";
-        document.getElementById("mensagem-erro").style.color = "red";
+        mostrarMensagem("Preencha o código, nome, quantidade e preço corretamente.", 'erro');
         return;
     }
 
     const codigoDuplicado = produtosGlobais.some(produto => produto.codigo_barras.toLowerCase() === codigo.toLowerCase());
     if (codigoDuplicado) {
-        document.getElementById("mensagem-erro").textContent = "Código de barras já cadastrado.";
-        document.getElementById("mensagem-erro").style.color = "red";
+        mostrarMensagem("Código de barras já cadastrado.", 'erro');
         return;
     }
 
@@ -40,14 +48,12 @@ async function cadastrar(event) {
 
     if (!resposta.ok) {
         const erro = await resposta.json().catch(() => ({}));
-        document.getElementById("mensagem-erro").textContent = "Erro ao cadastrar produto: " + (erro.erro || erro.mensagem || resposta.statusText);
-        document.getElementById("mensagem-erro").style.color = "red";
+        mostrarMensagem("Erro ao cadastrar produto: " + (erro.erro || erro.mensagem || resposta.statusText), 'erro');
         return;
     }
 
     document.getElementById("form-produto").reset();
-    document.getElementById("mensagem-erro").textContent = "Produto cadastrado!";
-    document.getElementById("mensagem-erro").style.color = "green";
+    mostrarMensagem("Produto cadastrado!", 'sucesso');
     carregarProdutos();
 }
 
@@ -75,7 +81,7 @@ async function carregarProdutos() {
         // adiciona HTML na lista
         lista.innerHTML += `
         
-            <li>
+            <li data-id="${produto.id}">
 
                 <strong>${produto.nome}</strong><br>
 
@@ -116,7 +122,7 @@ async function carregarProdutos() {
 async function deletarProduto(id) {
 
     const confirmar = confirm(//abre o popup
-        "Tem certeza que deseja deletar este produto?"
+        "Tem certeza que deseja deletar este produto permanentemente? Esta ação não pode ser desfeita."
     );
 
     if (!confirmar) {
@@ -132,35 +138,60 @@ async function deletarProduto(id) {
 }
 //EDITAR
 async function editarProduto(id) {
+    const li = document.querySelector(`li[data-id="${id}"]`);
+    const produto = produtosGlobais.find(p => p.id === id);
 
-    const codigo = prompt("Novo código de barras:");
-    const nome = prompt("Novo nome:");
-    const descricao = prompt("Nova descrição:");
-    const quantidade = prompt("Nova quantidade:");
-    const preco = prompt("Novo preço:");
+    li.innerHTML = `
+        <input type="text" value="${produto.nome}" id="edit-nome-${id}" placeholder="Nome"><br>
+        Código: <input type="text" value="${produto.codigo_barras}" id="edit-codigo-${id}" placeholder="Código de Barras"><br>
+        Descrição: <textarea id="edit-descricao-${id}" placeholder="Descrição">${produto.descricao}</textarea><br>
+        Quantidade: <input type="number" value="${produto.quantidade}" id="edit-quantidade-${id}" min="1"><br>
+        Preço: R$ <input type="number" value="${produto.preco}" id="edit-preco-${id}" step="0.01" min="0"><br>
+        <div class="acoes">
+            <button class="btn-salvar" onclick="salvarEdicao(${id})"><i class="fa-solid fa-check"></i></button>
+            <button class="btn-cancelar" onclick="cancelarEdicao(${id})"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <hr>
+    `;
+}
 
-    await fetch(`http://localhost:3000/produtos/${id}`, {
+async function salvarEdicao(id) {
+    const nome = document.getElementById(`edit-nome-${id}`).value.trim();
+    const codigo = document.getElementById(`edit-codigo-${id}`).value.trim();
+    const descricao = document.getElementById(`edit-descricao-${id}`).value.trim();
+    const quantidade = Number(document.getElementById(`edit-quantidade-${id}`).value);
+    const preco = Number(document.getElementById(`edit-preco-${id}`).value);
 
+    if (!codigo || !nome || !quantidade || isNaN(preco)) {
+        mostrarMensagem("Preencha todos os campos corretamente.", 'erro');
+        return;
+    }
+
+    const resposta = await fetch(`http://localhost:3000/produtos/${id}`, {
         method: "PUT",
-
         headers: {
             "Content-Type": "application/json"
         },
-
         body: JSON.stringify({
-
             codigo_barras: codigo,
-
             nome: nome,
-
             descricao: descricao,
-
             quantidade: quantidade,
-
             preco: preco
         })
     });
 
+    if (!resposta.ok) {
+        const erro = await resposta.json().catch(() => ({}));
+        mostrarMensagem("Erro ao atualizar produto: " + (erro.erro || erro.mensagem || resposta.statusText), 'erro');
+        return;
+    }
+
+    mostrarMensagem("Produto atualizado!", 'sucesso');
+    carregarProdutos();
+}
+
+function cancelarEdicao(id) {
     carregarProdutos();
 }
 //PESQUISAR
@@ -176,18 +207,20 @@ function pesquisarProdutos() {
 
     filtrados.forEach(produto => {
         lista.innerHTML += `
-            <li>
+            <li data-id="${produto.id}">
                 <strong>${produto.nome}</strong><br>
                 Código: ${produto.codigo_barras}<br>
                 Descrição: ${produto.descricao}<br>
                 Quantidade: ${produto.quantidade}<br>
                 Preço: R$ ${produto.preco}<br>
-                <button onclick="editarProduto(${produto.id})">
-                    Editar
-                </button>
-                <button onclick="deletarProduto(${produto.id})">
-                    Deletar
-                </button>
+                <div class="acoes">
+                    <button class="btn-editar" onclick="editarProduto(${produto.id})">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+                    <button class="btn-deletar" onclick="deletarProduto(${produto.id})">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
                 <hr>
             </li>
         `;
