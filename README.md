@@ -98,7 +98,8 @@ StockNexus/
 ```
 
 ---
-
+#Fluxo do projeto
+![Preview do Sistema](./fluxo.png)
 # Autor
 
 Desenvolvido por Matheus Victor 🚀
